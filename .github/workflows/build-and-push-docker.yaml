@@ -7,9 +7,9 @@ on:
 
 # Env variable
 env:
-  DOCKER_USER: ${{secrets.DOCKER_USER}}
-  DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
-  REPO_NAME: ${{secrets.REPO_NAME}}
+  DOCKERHUB_USERNAME: ${{secrets.DOCKERHUB_USERNAME}}
+  DOCKER_TOKEN: ${{secrets.DOCKERHUB_TOKEN}}
+  REPO_NAME: ${{secrets.DOCKERHUB_USERNAME}}
 
 jobs:
   build-and-push: 
@@ -22,11 +22,11 @@ jobs:
         name: Login to DockerHub
         uses: docker/login-action@v2
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          username: ${{ env.DOCKERHUB_USERNAME }}
+          password: ${{ env.DOCKER_TOKEN }}
       -
         name: Build and push
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/tools:swissknife.${{ github.run_number }}
+          tags: ${{ env.REPO_NAME }}/tools:swissknife.${{ github.run_number }}
